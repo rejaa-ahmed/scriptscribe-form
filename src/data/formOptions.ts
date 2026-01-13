@@ -1,0 +1,101 @@
+// Countries list
+export const countries = [
+  "Pakistan", "Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra", "Angola", "Anguilla",
+  "Antarctica", "Antigua And Barbuda", "Argentina", "Armenia", "Aruba", "Australia", "Austria",
+  "Azerbaijan", "Bahamas", "Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize",
+  "Benin", "Bermuda", "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil",
+  "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon", "Canada", "Cape Verde",
+  "Cayman Islands", "Central African Republic", "Chad", "Chile", "China", "Colombia", "Comoros",
+  "Congo", "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", "Djibouti",
+  "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", "Equatorial Guinea",
+  "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", "Gabon", "Gambia", "Georgia",
+  "Germany", "Ghana", "Greece", "Greenland", "Grenada", "Guatemala", "Guinea", "Guinea-Bissau",
+  "Guyana", "Haiti", "Honduras", "Hong Kong", "Hungary", "Iceland", "India", "Indonesia", "Iran",
+  "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya",
+  "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya",
+  "Liechtenstein", "Lithuania", "Luxembourg", "Malaysia", "Maldives", "Mali", "Malta", "Mexico",
+  "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", "Namibia",
+  "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", "North Korea",
+  "North Macedonia", "Norway", "Oman", "Palau", "Palestine", "Panama", "Papua New Guinea",
+  "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Puerto Rico", "Qatar", "Romania",
+  "Russia", "Rwanda", "Saudi Arabia", "Senegal", "Serbia", "Seychelles", "Sierra Leone",
+  "Singapore", "Slovakia", "Slovenia", "Somalia", "South Africa", "South Korea", "South Sudan",
+  "Spain", "Sri Lanka", "Sudan", "Suriname", "Sweden", "Switzerland", "Syria", "Taiwan",
+  "Tajikistan", "Tanzania", "Thailand", "Togo", "Trinidad And Tobago", "Tunisia", "Turkey",
+  "Turkmenistan", "Uganda", "Ukraine", "United Arab Emirates", "United Kingdom", "United States",
+  "Uruguay", "Uzbekistan", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+];
+
+export const ageRanges = ["Below 18", "18-20", "20-30", "30-40", "40-50", "50-60", "60+"];
+
+export const pakistanDegrees = [
+  "Matric (10th grade)",
+  "Inter (12th Grade)",
+  "Bachelor of Arts",
+  "Bachelor of Science",
+  "Bachelor of Commerce",
+  "Bachelor of Business Administration",
+  "Bachelor in Some Other Field",
+  "MBBS",
+  "FCPS",
+  "Master of Arts",
+  "Masters of Science",
+  "Master of Business Administration",
+  "Masters in Some Other Field",
+  "PhD in Sciences",
+  "PhD in Arts",
+  "PhD in Business Administration",
+  "PhD in some other field"
+];
+
+export const overseasDegrees = [
+  "Bachelor of Arts",
+  "Bachelor of Science",
+  "Bachelor of Commerce",
+  "Bachelor of Business Administration",
+  "Bachelor in Some Other Field",
+  "MD",
+  "FCPS",
+  "MS Engineering",
+  "MS Computer",
+  "Master of Arts",
+  "Masters of Science",
+  "Master of Business Administration",
+  "Masters in Some Other Field",
+  "PhD in Sciences",
+  "PhD in Arts",
+  "PhD in Business Administration",
+  "PhD in Medicine or Health Sciences",
+  "PhD in Some Other Field"
+];
+
+export const designations = ["CEO", "CFO", "CIO", "COO", "President", "Other"];
+
+export const expertTeams = [
+  "Economic System",
+  "Political System",
+  "Education System",
+  "Governance",
+  "Moral System",
+  "Judicial System",
+  "Digital Pakistan (IT system)",
+  "Press & Media Reforms"
+];
+
+export const graduationYears = Array.from({ length: 101 }, (_, i) => (2026 - i).toString());
+
+export const naConstituencies = [
+  "KPK - NA-1 Chitral", "KPK - NA-2 Swat-I", "KPK - NA-3 Swat-II", "KPK - NA-4 Swat-III",
+  "KPK - NA-5 Upper Dir", "KPK - NA-6 Lower Dir-I", "KPK - NA-7 Lower Dir-II", "KPK - NA-8 Bajaur",
+  "KPK - NA-28 Peshawar-I", "KPK - NA-29 Peshawar-II", "KPK - NA-30 Peshawar-III",
+  "Islamabad - NA-46 Islamabad-I", "Islamabad - NA-47 Islamabad-II", "Islamabad - NA-48 Islamabad-III",
+  "Punjab - NA-52 Rawalpindi-I", "Punjab - NA-53 Rawalpindi-II", "Punjab - NA-54 Rawalpindi-III",
+  "Punjab - NA-117 Lahore-I", "Punjab - NA-118 Lahore-II", "Punjab - NA-119 Lahore-III",
+  "Punjab - NA-120 Lahore-IV", "Punjab - NA-121 Lahore-V", "Punjab - NA-122 Lahore-VI",
+  "Punjab - NA-148 Multan-I", "Punjab - NA-149 Multan-II", "Punjab - NA-150 Multan-III",
+  "Sindh - NA-229 Malir-I", "Sindh - NA-230 Malir-II", "Sindh - NA-231 Malir-III",
+  "Sindh - NA-232 Karachi Korangi-I", "Sindh - NA-233 Karachi Korangi-II",
+  "Sindh - NA-239 Karachi South-I", "Sindh - NA-240 Karachi South-II",
+  "Sindh - NA-247 Karachi Central-I", "Sindh - NA-248 Karachi Central-II",
+  "Balochistan - NA-262 Quetta-I", "Balochistan - NA-263 Quetta-II", "Balochistan - NA-264 Quetta-III"
+];
