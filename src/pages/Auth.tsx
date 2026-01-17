@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -7,9 +7,12 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Separator } from "@/components/ui/separator";
+import { InputOTP, InputOTPGroup, InputOTPSlot } from "@/components/ui/input-otp";
 import { toast } from "sonner";
-import { Mail, Lock, User, Loader2 } from "lucide-react";
+import { Mail, Lock, User, Loader2, ArrowLeft } from "lucide-react";
 import logo from "@/assets/logo.png";
+
+type AuthStep = "initial" | "verify-otp";
 
 const Auth = () => {
   const navigate = useNavigate();
@@ -18,13 +21,16 @@ const Auth = () => {
   const [password, setPassword] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [otpCode, setOtpCode] = useState("");
+  const [authStep, setAuthStep] = useState<AuthStep>("initial");
+  const [pendingEmail, setPendingEmail] = useState("");
 
   useEffect(() => {
     // Set up auth state listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
         if (session?.user) {
-          navigate("/", { replace: true });
+          navigate("/register", { replace: true });
         }
       }
     );
@@ -32,7 +38,7 @@ const Auth = () => {
     // Check for existing session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session?.user) {
-        navigate("/", { replace: true });
+        navigate("/register", { replace: true });
       }
     });
 
@@ -44,13 +50,10 @@ const Auth = () => {
     setIsLoading(true);
 
     try {
-      const redirectUrl = `${window.location.origin}/`;
-      
       const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
-          emailRedirectTo: redirectUrl,
           data: {
             first_name: firstName,
             last_name: lastName,
@@ -67,7 +70,9 @@ const Auth = () => {
         return;
       }
 
-      toast.success("Account created successfully! You can now sign in.");
+      setPendingEmail(email);
+      setAuthStep("verify-otp");
+      toast.success("Verification code sent! Check your email.");
     } catch (error: any) {
       toast.error("An error occurred. Please try again.");
     } finally {
@@ -88,6 +93,23 @@ const Auth = () => {
       if (error) {
         if (error.message.includes("Invalid login credentials")) {
           toast.error("Invalid email or password. Please try again.");
+        } else if (error.message.includes("Email not confirmed")) {
+          // User exists but hasn't verified - resend OTP
+          const { error: otpError } = await supabase.auth.signInWithOtp({
+            email,
+            options: {
+              shouldCreateUser: false,
+            },
+          });
+          
+          if (otpError) {
+            toast.error(otpError.message);
+            return;
+          }
+          
+          setPendingEmail(email);
+          setAuthStep("verify-otp");
+          toast.info("Please verify your email first. Code sent!");
         } else {
           toast.error(error.message);
         }
@@ -102,6 +124,56 @@ const Auth = () => {
     }
   };
 
+  const handleVerifyOtp = async () => {
+    if (otpCode.length !== 6) {
+      toast.error("Please enter the complete 6-digit code");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.auth.verifyOtp({
+        email: pendingEmail,
+        token: otpCode,
+        type: "email",
+      });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      toast.success("Email verified successfully!");
+    } catch (error: any) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleResendOtp = async () => {
+    setIsLoading(true);
+
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: pendingEmail,
+      });
+
+      if (error) {
+        toast.error(error.message);
+        return;
+      }
+
+      toast.success("Verification code resent! Check your email.");
+    } catch (error: any) {
+      toast.error("An error occurred. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   const handleOAuthSignIn = async (provider: "google" | "azure" | "facebook") => {
     setIsLoading(true);
     
@@ -109,7 +181,7 @@ const Auth = () => {
       const { error } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
-          redirectTo: `${window.location.origin}/`,
+          redirectTo: `${window.location.origin}/register`,
         },
       });
 
@@ -123,15 +195,96 @@ const Auth = () => {
     }
   };
 
+  if (authStep === "verify-otp") {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center py-8 px-4">
+        <Card className="w-full max-w-md shadow-form">
+          <CardHeader className="text-center space-y-4">
+            <img 
+              src={logo} 
+              alt="United for Better Pakistan" 
+              className="h-16 mx-auto"
+            />
+            <CardTitle className="text-2xl font-bold text-foreground">
+              Verify Your Email
+            </CardTitle>
+            <CardDescription className="text-muted-foreground">
+              We sent a 6-digit code to <span className="font-medium text-foreground">{pendingEmail}</span>
+            </CardDescription>
+          </CardHeader>
+          
+          <CardContent className="space-y-6">
+            <div className="flex flex-col items-center space-y-4">
+              <InputOTP
+                maxLength={6}
+                value={otpCode}
+                onChange={(value) => setOtpCode(value)}
+              >
+                <InputOTPGroup>
+                  <InputOTPSlot index={0} />
+                  <InputOTPSlot index={1} />
+                  <InputOTPSlot index={2} />
+                  <InputOTPSlot index={3} />
+                  <InputOTPSlot index={4} />
+                  <InputOTPSlot index={5} />
+                </InputOTPGroup>
+              </InputOTP>
+              
+              <Button 
+                onClick={handleVerifyOtp}
+                className="w-full bg-primary hover:bg-primary/90"
+                disabled={isLoading || otpCode.length !== 6}
+              >
+                {isLoading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Verifying...
+                  </>
+                ) : (
+                  "Verify Email"
+                )}
+              </Button>
+              
+              <div className="flex flex-col items-center gap-2 text-sm">
+                <button
+                  type="button"
+                  onClick={handleResendOtp}
+                  disabled={isLoading}
+                  className="text-primary hover:underline disabled:opacity-50"
+                >
+                  Didn't receive a code? Resend
+                </button>
+                
+                <button
+                  type="button"
+                  onClick={() => {
+                    setAuthStep("initial");
+                    setOtpCode("");
+                  }}
+                  className="flex items-center gap-1 text-muted-foreground hover:text-foreground"
+                >
+                  <ArrowLeft className="h-3 w-3" />
+                  Back to sign in
+                </button>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background flex items-center justify-center py-8 px-4">
       <Card className="w-full max-w-md shadow-form">
         <CardHeader className="text-center space-y-4">
-          <img 
-            src={logo} 
-            alt="United for Better Pakistan" 
-            className="h-16 mx-auto"
-          />
+          <Link to="/">
+            <img 
+              src={logo} 
+              alt="United for Better Pakistan" 
+              className="h-16 mx-auto cursor-pointer hover:opacity-80 transition-opacity"
+            />
+          </Link>
           <CardTitle className="text-2xl font-bold text-foreground">
             Welcome
           </CardTitle>
@@ -337,6 +490,12 @@ const Auth = () => {
               </form>
             </TabsContent>
           </Tabs>
+          
+          <div className="text-center">
+            <Link to="/" className="text-sm text-muted-foreground hover:text-foreground">
+              ← Back to home
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>
