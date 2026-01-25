@@ -14,7 +14,108 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      registrations: {
+        Row: {
+          areas_of_interest: string[] | null
+          availability: string | null
+          city: string | null
+          comments: string | null
+          country: string | null
+          created_at: string
+          current_occupation: string | null
+          email: string
+          employer: string | null
+          expertise: string | null
+          first_name: string
+          id: string
+          is_student: string | null
+          job_title: string | null
+          last_name: string
+          overseas_country: string | null
+          overseas_degree: string | null
+          overseas_department: string | null
+          overseas_graduation_year: string | null
+          overseas_university: string | null
+          pakistan_degree: string | null
+          pakistan_department: string | null
+          pakistan_graduation_year: string | null
+          pakistan_university: string | null
+          part_of_solution: string | null
+          phone: string | null
+          referral: string | null
+          skills: string | null
+          time_commitment: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          areas_of_interest?: string[] | null
+          availability?: string | null
+          city?: string | null
+          comments?: string | null
+          country?: string | null
+          created_at?: string
+          current_occupation?: string | null
+          email: string
+          employer?: string | null
+          expertise?: string | null
+          first_name: string
+          id?: string
+          is_student?: string | null
+          job_title?: string | null
+          last_name: string
+          overseas_country?: string | null
+          overseas_degree?: string | null
+          overseas_department?: string | null
+          overseas_graduation_year?: string | null
+          overseas_university?: string | null
+          pakistan_degree?: string | null
+          pakistan_department?: string | null
+          pakistan_graduation_year?: string | null
+          pakistan_university?: string | null
+          part_of_solution?: string | null
+          phone?: string | null
+          referral?: string | null
+          skills?: string | null
+          time_commitment?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          areas_of_interest?: string[] | null
+          availability?: string | null
+          city?: string | null
+          comments?: string | null
+          country?: string | null
+          created_at?: string
+          current_occupation?: string | null
+          email?: string
+          employer?: string | null
+          expertise?: string | null
+          first_name?: string
+          id?: string
+          is_student?: string | null
+          job_title?: string | null
+          last_name?: string
+          overseas_country?: string | null
+          overseas_degree?: string | null
+          overseas_department?: string | null
+          overseas_graduation_year?: string | null
+          overseas_university?: string | null
+          pakistan_degree?: string | null
+          pakistan_department?: string | null
+          pakistan_graduation_year?: string | null
+          pakistan_university?: string | null
+          part_of_solution?: string | null
+          phone?: string | null
+          referral?: string | null
+          skills?: string | null
+          time_commitment?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never

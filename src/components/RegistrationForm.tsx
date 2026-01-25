@@ -7,8 +7,10 @@ import { PakistanAcademicsSection } from "./form/PakistanAcademicsSection";
 import { OverseasAcademicsSection } from "./form/OverseasAcademicsSection";
 import { ContributionSection } from "./form/ContributionSection";
 import { CommitmentSection } from "./form/CommitmentSection";
-import { ArrowLeft, ArrowRight, Save, Send, CheckCircle } from "lucide-react";
+import { ArrowLeft, ArrowRight, Save, Send, CheckCircle, Loader2 } from "lucide-react";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 
 const STEPS = [
   { id: 1, title: "Personal Info" },
@@ -22,6 +24,8 @@ export const RegistrationForm = () => {
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const { user } = useAuth();
 
   const updateFormData = (data: Record<string, any>) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -46,7 +50,7 @@ export const RegistrationForm = () => {
     toast.success("Progress saved successfully!");
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     // Validate required fields
     if (!formData.firstName || !formData.lastName || !formData.email) {
       toast.error("Please fill in all required fields in Personal Info section");
@@ -54,10 +58,60 @@ export const RegistrationForm = () => {
       return;
     }
 
-    // Here you would typically send the data to your backend
-    console.log("Form submitted:", formData);
-    setIsSubmitted(true);
-    toast.success("Registration submitted successfully!");
+    if (!user) {
+      toast.error("You must be logged in to submit the form");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from("registrations").insert({
+        user_id: user.id,
+        first_name: formData.firstName,
+        last_name: formData.lastName,
+        email: formData.email,
+        phone: formData.phone,
+        city: formData.city,
+        country: formData.country,
+        is_student: formData.isStudent,
+        pakistan_degree: formData.pakistanDegree,
+        pakistan_university: formData.pakistanUniversity,
+        pakistan_department: formData.pakistanDepartment,
+        pakistan_graduation_year: formData.pakistanGraduationYear,
+        overseas_degree: formData.overseasDegree,
+        overseas_university: formData.overseasUniversity,
+        overseas_department: formData.overseasDepartment,
+        overseas_graduation_year: formData.overseasGraduationYear,
+        overseas_country: formData.overseasCountry,
+        current_occupation: formData.currentOccupation,
+        employer: formData.employer,
+        job_title: formData.jobTitle,
+        areas_of_interest: formData.areasOfInterest,
+        expertise: formData.expertise,
+        availability: formData.availability,
+        part_of_solution: formData.partOfSolution,
+        skills: formData.skills,
+        time_commitment: formData.timeCommitment,
+        referral: formData.referral,
+        comments: formData.comments,
+      });
+
+      if (error) {
+        console.error("Submission error:", error);
+        toast.error("Failed to submit registration. Please try again.");
+        return;
+      }
+
+      setIsSubmitted(true);
+      localStorage.removeItem("registrationFormData");
+      toast.success("Registration submitted successfully!");
+    } catch (error) {
+      console.error("Submission error:", error);
+      toast.error("An unexpected error occurred. Please try again.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const renderSection = () => {
@@ -145,9 +199,18 @@ export const RegistrationForm = () => {
             ) : (
               <Button
                 onClick={handleSubmit}
+                disabled={isSubmitting}
                 className="flex items-center gap-2 bg-primary hover:bg-primary/90"
               >
-                <Send className="w-4 h-4" /> Submit
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="w-4 h-4 animate-spin" /> Submitting...
+                  </>
+                ) : (
+                  <>
+                    <Send className="w-4 h-4" /> Submit
+                  </>
+                )}
               </Button>
             )}
           </div>
