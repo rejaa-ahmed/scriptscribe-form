@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormStep } from "./form/FormStep";
@@ -7,10 +7,11 @@ import { PakistanAcademicsSection } from "./form/PakistanAcademicsSection";
 import { OverseasAcademicsSection } from "./form/OverseasAcademicsSection";
 import { ContributionSection } from "./form/ContributionSection";
 import { CommitmentSection } from "./form/CommitmentSection";
-import { ArrowLeft, ArrowRight, Save, Send, CheckCircle, Loader2 } from "lucide-react";
+import { ArrowLeft, ArrowRight, Save, Send, CheckCircle, Loader2, Edit } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
+import { useExistingRegistration } from "@/hooks/useExistingRegistration";
 
 const STEPS = [
   { id: 1, title: "Personal Info" },
@@ -25,7 +26,44 @@ export const RegistrationForm = () => {
   const [formData, setFormData] = useState<Record<string, any>>({});
   const [isSubmitted, setIsSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
   const { user } = useAuth();
+  const { existingRegistration, isLoading: isLoadingExisting } = useExistingRegistration();
+
+  // Load existing registration data into form
+  useEffect(() => {
+    if (existingRegistration) {
+      setFormData({
+        firstName: existingRegistration.firstName,
+        lastName: existingRegistration.lastName,
+        email: existingRegistration.email,
+        phone: existingRegistration.phone,
+        city: existingRegistration.city,
+        country: existingRegistration.country,
+        isStudent: existingRegistration.isStudent,
+        pakistanDegree: existingRegistration.pakistanDegree,
+        pakistanUniversity: existingRegistration.pakistanUniversity,
+        pakistanDepartment: existingRegistration.pakistanDepartment,
+        pakistanGraduationYear: existingRegistration.pakistanGraduationYear,
+        overseasDegree: existingRegistration.overseasDegree,
+        overseasUniversity: existingRegistration.overseasUniversity,
+        overseasDepartment: existingRegistration.overseasDepartment,
+        overseasGraduationYear: existingRegistration.overseasGraduationYear,
+        overseasCountry: existingRegistration.overseasCountry,
+        currentOccupation: existingRegistration.currentOccupation,
+        employer: existingRegistration.employer,
+        jobTitle: existingRegistration.jobTitle,
+        areasOfInterest: existingRegistration.areasOfInterest,
+        expertise: existingRegistration.expertise,
+        availability: existingRegistration.availability,
+        partOfSolution: existingRegistration.partOfSolution,
+        skills: existingRegistration.skills,
+        timeCommitment: existingRegistration.timeCommitment,
+        referral: existingRegistration.referral,
+        comments: existingRegistration.comments,
+      });
+    }
+  }, [existingRegistration]);
 
   const updateFormData = (data: Record<string, any>) => {
     setFormData((prev) => ({ ...prev, ...data }));
@@ -66,7 +104,7 @@ export const RegistrationForm = () => {
     setIsSubmitting(true);
 
     try {
-      const { error } = await supabase.from("registrations").insert({
+      const registrationData = {
         user_id: user.id,
         first_name: formData.firstName,
         last_name: formData.lastName,
@@ -95,7 +133,22 @@ export const RegistrationForm = () => {
         time_commitment: formData.timeCommitment,
         referral: formData.referral,
         comments: formData.comments,
-      });
+      };
+
+      let error;
+      
+      if (existingRegistration) {
+        // Update existing registration
+        const result = await supabase
+          .from("registrations")
+          .update(registrationData)
+          .eq("id", existingRegistration.id);
+        error = result.error;
+      } else {
+        // Insert new registration
+        const result = await supabase.from("registrations").insert(registrationData);
+        error = result.error;
+      }
 
       if (error) {
         console.error("Submission error:", error);
@@ -104,8 +157,9 @@ export const RegistrationForm = () => {
       }
 
       setIsSubmitted(true);
+      setIsEditMode(false);
       localStorage.removeItem("registrationFormData");
-      toast.success("Registration submitted successfully!");
+      toast.success(existingRegistration ? "Registration updated successfully!" : "Registration submitted successfully!");
     } catch (error) {
       console.error("Submission error:", error);
       toast.error("An unexpected error occurred. Please try again.");
@@ -131,6 +185,43 @@ export const RegistrationForm = () => {
     }
   };
 
+  // Show loading state while checking for existing registration
+  if (isLoadingExisting) {
+    return (
+      <Card className="max-w-3xl mx-auto shadow-form overflow-hidden">
+        <CardContent className="p-8 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </CardContent>
+      </Card>
+    );
+  }
+
+  // Show existing registration view (if they have one and aren't editing)
+  if (existingRegistration && !isEditMode && !isSubmitted) {
+    return (
+      <Card className="max-w-3xl mx-auto shadow-form overflow-hidden">
+        <div className="form-section-gradient p-8 text-center">
+          <CheckCircle className="w-16 h-16 mx-auto mb-4 text-primary" />
+          <h2 className="text-2xl font-bold text-form-header-foreground">Registration Complete</h2>
+        </div>
+        <CardContent className="p-8 text-center">
+          <h3 className="text-xl font-semibold text-foreground mb-4">
+            You have already submitted your registration
+          </h3>
+          <p className="text-muted-foreground mb-6">
+            Thank you for joining United for Better Pakistan! You can edit your submission below.
+          </p>
+          <Button 
+            onClick={() => setIsEditMode(true)}
+            className="bg-primary hover:bg-primary/90 flex items-center gap-2 mx-auto"
+          >
+            <Edit className="w-4 h-4" /> Edit My Registration
+          </Button>
+        </CardContent>
+      </Card>
+    );
+  }
+
   if (isSubmitted) {
     return (
       <Card className="max-w-3xl mx-auto shadow-form overflow-hidden">
@@ -140,21 +231,11 @@ export const RegistrationForm = () => {
         </div>
         <CardContent className="p-8 text-center">
           <h3 className="text-xl font-semibold text-foreground mb-4">
-            Your registration has been submitted successfully
+            {existingRegistration ? "Your registration has been updated successfully" : "Your registration has been submitted successfully"}
           </h3>
           <p className="text-muted-foreground mb-6">
             Thank you for joining United for Better Pakistan. Together, we can make a difference!
           </p>
-          <Button 
-            onClick={() => {
-              setIsSubmitted(false);
-              setCurrentStep(1);
-              setFormData({});
-            }}
-            className="bg-primary hover:bg-primary/90"
-          >
-            Submit Another Response
-          </Button>
         </CardContent>
       </Card>
     );
@@ -204,11 +285,11 @@ export const RegistrationForm = () => {
               >
                 {isSubmitting ? (
                   <>
-                    <Loader2 className="w-4 h-4 animate-spin" /> Submitting...
+                    <Loader2 className="w-4 h-4 animate-spin" /> {existingRegistration ? "Updating..." : "Submitting..."}
                   </>
                 ) : (
                   <>
-                    <Send className="w-4 h-4" /> Submit
+                    <Send className="w-4 h-4" /> {existingRegistration ? "Update" : "Submit"}
                   </>
                 )}
               </Button>
