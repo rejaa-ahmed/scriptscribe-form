@@ -30,7 +30,20 @@ export const RegistrationForm = () => {
   const { user } = useAuth();
   const { existingRegistration, isLoading: isLoadingExisting } = useExistingRegistration();
 
-  // Load existing registration data into form
+  // Load saved progress from localStorage on mount
+  useEffect(() => {
+    const savedData = localStorage.getItem("registrationFormData");
+    if (savedData) {
+      try {
+        const parsed = JSON.parse(savedData);
+        setFormData(parsed);
+      } catch (e) {
+        console.error("Failed to parse saved form data:", e);
+      }
+    }
+  }, []);
+
+  // Load existing registration data into form (overrides localStorage if exists)
   useEffect(() => {
     if (existingRegistration) {
       setFormData({
@@ -62,6 +75,8 @@ export const RegistrationForm = () => {
         referral: existingRegistration.referral,
         comments: existingRegistration.comments,
       });
+      // Clear localStorage since we have a submitted registration
+      localStorage.removeItem("registrationFormData");
     }
   }, [existingRegistration]);
 
