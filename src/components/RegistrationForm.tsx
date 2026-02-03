@@ -1,4 +1,3 @@
-import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { FormStep } from "./form/FormStep";
@@ -8,10 +7,7 @@ import { OverseasAcademicsSection } from "./form/OverseasAcademicsSection";
 import { ContributionSection } from "./form/ContributionSection";
 import { CommitmentSection } from "./form/CommitmentSection";
 import { ArrowLeft, ArrowRight, Save, Send, CheckCircle, Loader2, Edit } from "lucide-react";
-import { toast } from "sonner";
-import { supabase } from "@/integrations/supabase/client";
-import { useAuth } from "@/hooks/useAuth";
-import { useExistingRegistration } from "@/hooks/useExistingRegistration";
+import { useRegistrationForm } from "@/hooks/useRegistrationForm";
 
 const STEPS = [
   { id: 1, title: "Personal Info" },
@@ -22,166 +18,21 @@ const STEPS = [
 ];
 
 export const RegistrationForm = () => {
-  const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<Record<string, any>>({});
-  const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isEditMode, setIsEditMode] = useState(false);
-  const { user } = useAuth();
-  const { existingRegistration, isLoading: isLoadingExisting } = useExistingRegistration();
-
-  // Load saved progress from localStorage on mount
-  useEffect(() => {
-    const savedData = localStorage.getItem("registrationFormData");
-    if (savedData) {
-      try {
-        const parsed = JSON.parse(savedData);
-        setFormData(parsed);
-      } catch (e) {
-        console.error("Failed to parse saved form data:", e);
-      }
-    }
-  }, []);
-
-  // Load existing registration data into form (overrides localStorage if exists)
-  useEffect(() => {
-    if (existingRegistration) {
-      setFormData({
-        firstName: existingRegistration.firstName,
-        lastName: existingRegistration.lastName,
-        email: existingRegistration.email,
-        phone: existingRegistration.phone,
-        city: existingRegistration.city,
-        country: existingRegistration.country,
-        isStudent: existingRegistration.isStudent,
-        pakistanDegree: existingRegistration.pakistanDegree,
-        pakistanUniversity: existingRegistration.pakistanUniversity,
-        pakistanDepartment: existingRegistration.pakistanDepartment,
-        pakistanGraduationYear: existingRegistration.pakistanGraduationYear,
-        overseasDegree: existingRegistration.overseasDegree,
-        overseasUniversity: existingRegistration.overseasUniversity,
-        overseasDepartment: existingRegistration.overseasDepartment,
-        overseasGraduationYear: existingRegistration.overseasGraduationYear,
-        overseasCountry: existingRegistration.overseasCountry,
-        currentOccupation: existingRegistration.currentOccupation,
-        employer: existingRegistration.employer,
-        jobTitle: existingRegistration.jobTitle,
-        areasOfInterest: existingRegistration.areasOfInterest,
-        expertise: existingRegistration.expertise,
-        availability: existingRegistration.availability,
-        partOfSolution: existingRegistration.partOfSolution,
-        skills: existingRegistration.skills,
-        timeCommitment: existingRegistration.timeCommitment,
-        referral: existingRegistration.referral,
-        comments: existingRegistration.comments,
-      });
-      // Clear localStorage since we have a submitted registration
-      localStorage.removeItem("registrationFormData");
-    }
-  }, [existingRegistration]);
-
-  const updateFormData = (data: Record<string, any>) => {
-    setFormData((prev) => ({ ...prev, ...data }));
-  };
-
-  const handleNext = () => {
-    if (currentStep < STEPS.length) {
-      setCurrentStep((prev) => prev + 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const handleBack = () => {
-    if (currentStep > 1) {
-      setCurrentStep((prev) => prev - 1);
-      window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-  };
-
-  const handleSave = () => {
-    localStorage.setItem("registrationFormData", JSON.stringify(formData));
-    toast.success("Progress saved successfully!");
-  };
-
-  const handleSubmit = async () => {
-    // Validate required fields
-    if (!formData.firstName || !formData.lastName || !formData.email) {
-      toast.error("Please fill in all required fields in Personal Info section");
-      setCurrentStep(1);
-      return;
-    }
-
-    if (!user) {
-      toast.error("You must be logged in to submit the form");
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const registrationData = {
-        user_id: user.id,
-        first_name: formData.firstName,
-        last_name: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        city: formData.city,
-        country: formData.country,
-        is_student: formData.isStudent,
-        pakistan_degree: formData.pakistanDegree,
-        pakistan_university: formData.pakistanUniversity,
-        pakistan_department: formData.pakistanDepartment,
-        pakistan_graduation_year: formData.pakistanGraduationYear,
-        overseas_degree: formData.overseasDegree,
-        overseas_university: formData.overseasUniversity,
-        overseas_department: formData.overseasDepartment,
-        overseas_graduation_year: formData.overseasGraduationYear,
-        overseas_country: formData.overseasCountry,
-        current_occupation: formData.currentOccupation,
-        employer: formData.employer,
-        job_title: formData.jobTitle,
-        areas_of_interest: formData.areasOfInterest,
-        expertise: formData.expertise,
-        availability: formData.availability,
-        part_of_solution: formData.partOfSolution,
-        skills: formData.skills,
-        time_commitment: formData.timeCommitment,
-        referral: formData.referral,
-        comments: formData.comments,
-      };
-
-      let error;
-      
-      if (existingRegistration) {
-        // Update existing registration
-        const result = await supabase
-          .from("registrations")
-          .update(registrationData)
-          .eq("id", existingRegistration.id);
-        error = result.error;
-      } else {
-        // Insert new registration
-        const result = await supabase.from("registrations").insert(registrationData);
-        error = result.error;
-      }
-
-      if (error) {
-        console.error("Submission error:", error);
-        toast.error("Failed to submit registration. Please try again.");
-        return;
-      }
-
-      setIsSubmitted(true);
-      setIsEditMode(false);
-      localStorage.removeItem("registrationFormData");
-      toast.success(existingRegistration ? "Registration updated successfully!" : "Registration submitted successfully!");
-    } catch (error) {
-      console.error("Submission error:", error);
-      toast.error("An unexpected error occurred. Please try again.");
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const {
+    currentStep,
+    formData,
+    updateFormData,
+    isSubmitted,
+    isSubmitting,
+    isEditMode,
+    setIsEditMode,
+    isLoadingExisting,
+    existingRegistration,
+    handleNext,
+    handleBack,
+    handleSave,
+    handleSubmit,
+  } = useRegistrationForm();
 
   const renderSection = () => {
     switch (currentStep) {

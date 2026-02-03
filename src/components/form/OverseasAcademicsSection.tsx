@@ -29,7 +29,7 @@ export const OverseasAcademicsSection = ({ formData, updateFormData }: OverseasA
             value={formData.overseasDegree || ""}
             onValueChange={(value) => updateFormData({ overseasDegree: value })}
           >
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-background">
               <SelectValue placeholder="Please Select" />
             </SelectTrigger>
             <SelectContent>
@@ -50,7 +50,7 @@ export const OverseasAcademicsSection = ({ formData, updateFormData }: OverseasA
             placeholder="Enter your university or college name"
             value={formData.overseasUniversity || ""}
             onChange={(e) => updateFormData({ overseasUniversity: e.target.value })}
-            className="bg-white"
+            className="bg-background"
           />
         </div>
 
@@ -62,7 +62,7 @@ export const OverseasAcademicsSection = ({ formData, updateFormData }: OverseasA
             placeholder="Enter your department"
             value={formData.overseasDepartment || ""}
             onChange={(e) => updateFormData({ overseasDepartment: e.target.value })}
-            className="bg-white"
+            className="bg-background"
           />
         </div>
 
@@ -73,7 +73,7 @@ export const OverseasAcademicsSection = ({ formData, updateFormData }: OverseasA
             value={formData.overseasGraduationYear || ""}
             onValueChange={(value) => updateFormData({ overseasGraduationYear: value })}
           >
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-background">
               <SelectValue placeholder="Please Select" />
             </SelectTrigger>
             <SelectContent>
@@ -108,7 +108,7 @@ export const OverseasAcademicsSection = ({ formData, updateFormData }: OverseasA
             placeholder="Enter your area of expertise"
             value={formData.phdExpertise || ""}
             onChange={(e) => updateFormData({ phdExpertise: e.target.value })}
-            className="bg-white"
+            className="bg-background"
           />
         </div>
       </div>
@@ -134,7 +134,7 @@ export const OverseasAcademicsSection = ({ formData, updateFormData }: OverseasA
             placeholder="Enter your company name"
             value={formData.companyName || ""}
             onChange={(e) => updateFormData({ companyName: e.target.value })}
-            className="bg-white"
+            className="bg-background"
           />
         </div>
 
@@ -144,7 +144,7 @@ export const OverseasAcademicsSection = ({ formData, updateFormData }: OverseasA
             value={formData.designation || ""}
             onValueChange={(value) => updateFormData({ designation: value })}
           >
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-background">
               <SelectValue placeholder="Please Select" />
             </SelectTrigger>
             <SelectContent>

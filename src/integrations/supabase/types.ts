@@ -16,21 +16,29 @@ export type Database = {
     Tables: {
       registrations: {
         Row: {
+          age: string | null
           areas_of_interest: string[] | null
           availability: string | null
           city: string | null
           comments: string | null
+          company_name: string | null
           country: string | null
           created_at: string
+          current_constituency: string | null
           current_occupation: string | null
+          designation: string | null
           email: string
           employer: string | null
+          expert_teams: string[] | null
           expertise: string | null
           first_name: string
+          gender: string | null
           id: string
           is_student: string | null
           job_title: string | null
+          join_experts: string | null
           last_name: string
+          linkedin: string | null
           overseas_country: string | null
           overseas_degree: string | null
           overseas_department: string | null
@@ -41,29 +49,41 @@ export type Database = {
           pakistan_graduation_year: string | null
           pakistan_university: string | null
           part_of_solution: string | null
+          phd_expertise: string | null
           phone: string | null
           referral: string | null
+          rural_constituency: string | null
           skills: string | null
+          state: string | null
           time_commitment: string | null
           updated_at: string
+          urban_constituency: string | null
           user_id: string
         }
         Insert: {
+          age?: string | null
           areas_of_interest?: string[] | null
           availability?: string | null
           city?: string | null
           comments?: string | null
+          company_name?: string | null
           country?: string | null
           created_at?: string
+          current_constituency?: string | null
           current_occupation?: string | null
+          designation?: string | null
           email: string
           employer?: string | null
+          expert_teams?: string[] | null
           expertise?: string | null
           first_name: string
+          gender?: string | null
           id?: string
           is_student?: string | null
           job_title?: string | null
+          join_experts?: string | null
           last_name: string
+          linkedin?: string | null
           overseas_country?: string | null
           overseas_degree?: string | null
           overseas_department?: string | null
@@ -74,29 +94,41 @@ export type Database = {
           pakistan_graduation_year?: string | null
           pakistan_university?: string | null
           part_of_solution?: string | null
+          phd_expertise?: string | null
           phone?: string | null
           referral?: string | null
+          rural_constituency?: string | null
           skills?: string | null
+          state?: string | null
           time_commitment?: string | null
           updated_at?: string
+          urban_constituency?: string | null
           user_id: string
         }
         Update: {
+          age?: string | null
           areas_of_interest?: string[] | null
           availability?: string | null
           city?: string | null
           comments?: string | null
+          company_name?: string | null
           country?: string | null
           created_at?: string
+          current_constituency?: string | null
           current_occupation?: string | null
+          designation?: string | null
           email?: string
           employer?: string | null
+          expert_teams?: string[] | null
           expertise?: string | null
           first_name?: string
+          gender?: string | null
           id?: string
           is_student?: string | null
           job_title?: string | null
+          join_experts?: string | null
           last_name?: string
+          linkedin?: string | null
           overseas_country?: string | null
           overseas_degree?: string | null
           overseas_department?: string | null
@@ -107,11 +139,15 @@ export type Database = {
           pakistan_graduation_year?: string | null
           pakistan_university?: string | null
           part_of_solution?: string | null
+          phd_expertise?: string | null
           phone?: string | null
           referral?: string | null
+          rural_constituency?: string | null
           skills?: string | null
+          state?: string | null
           time_commitment?: string | null
           updated_at?: string
+          urban_constituency?: string | null
           user_id?: string
         }
         Relationships: []

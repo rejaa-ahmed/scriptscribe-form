@@ -40,7 +40,7 @@ export const CommitmentSection = ({ formData, updateFormData }: CommitmentSectio
           placeholder="Describe your skills, experience, and how you can contribute to building a better Pakistan..."
           value={formData.skills || ""}
           onChange={(e) => updateFormData({ skills: e.target.value })}
-          className="bg-white min-h-[120px]"
+          className="bg-background min-h-[120px]"
         />
       </div>
 
@@ -69,7 +69,7 @@ export const CommitmentSection = ({ formData, updateFormData }: CommitmentSectio
           placeholder="Friend, social media, website, etc."
           value={formData.referral || ""}
           onChange={(e) => updateFormData({ referral: e.target.value })}
-          className="bg-white"
+          className="bg-background"
         />
       </div>
 
@@ -81,7 +81,7 @@ export const CommitmentSection = ({ formData, updateFormData }: CommitmentSectio
           placeholder="Any additional comments or suggestions for United for Better Pakistan..."
           value={formData.comments || ""}
           onChange={(e) => updateFormData({ comments: e.target.value })}
-          className="bg-white min-h-[100px]"
+          className="bg-background min-h-[100px]"
         />
       </div>
     </div>
