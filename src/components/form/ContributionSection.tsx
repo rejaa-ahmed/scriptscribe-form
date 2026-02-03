@@ -53,7 +53,7 @@ export const ContributionSection = ({ formData, updateFormData }: ContributionSe
           <Label>Which team of experts would you like to join?</Label>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {expertTeams.map((team) => (
-              <div key={team} className="flex items-center space-x-3 p-3 bg-white rounded-lg border border-border hover:border-primary/50 transition-colors">
+              <div key={team} className="flex items-center space-x-3 p-3 bg-background rounded-lg border border-border hover:border-primary/50 transition-colors">
                 <Checkbox
                   id={`team-${team}`}
                   checked={(formData.expertTeams || []).includes(team)}
@@ -76,7 +76,7 @@ export const ContributionSection = ({ formData, updateFormData }: ContributionSe
           value={formData.currentConstituency || ""}
           onValueChange={(value) => updateFormData({ currentConstituency: value })}
         >
-          <SelectTrigger className="bg-white">
+          <SelectTrigger className="bg-background">
             <SelectValue placeholder="Please Select" />
           </SelectTrigger>
           <SelectContent>
@@ -97,7 +97,7 @@ export const ContributionSection = ({ formData, updateFormData }: ContributionSe
           value={formData.urbanConstituency || ""}
           onValueChange={(value) => updateFormData({ urbanConstituency: value })}
         >
-          <SelectTrigger className="bg-white">
+          <SelectTrigger className="bg-background">
             <SelectValue placeholder="Please Select" />
           </SelectTrigger>
           <SelectContent>
@@ -118,7 +118,7 @@ export const ContributionSection = ({ formData, updateFormData }: ContributionSe
           value={formData.ruralConstituency || ""}
           onValueChange={(value) => updateFormData({ ruralConstituency: value })}
         >
-          <SelectTrigger className="bg-white">
+          <SelectTrigger className="bg-background">
             <SelectValue placeholder="Please Select" />
           </SelectTrigger>
           <SelectContent>

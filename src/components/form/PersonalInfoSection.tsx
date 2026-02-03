@@ -29,7 +29,7 @@ export const PersonalInfoSection = ({ formData, updateFormData }: PersonalInfoSe
             placeholder="Enter your first name"
             value={formData.firstName || ""}
             onChange={(e) => updateFormData({ firstName: e.target.value })}
-            className="bg-white"
+            className="bg-background"
           />
         </div>
         <div className="space-y-2">
@@ -39,7 +39,7 @@ export const PersonalInfoSection = ({ formData, updateFormData }: PersonalInfoSe
             placeholder="Enter your last name"
             value={formData.lastName || ""}
             onChange={(e) => updateFormData({ lastName: e.target.value })}
-            className="bg-white"
+            className="bg-background"
           />
         </div>
       </div>
@@ -53,7 +53,7 @@ export const PersonalInfoSection = ({ formData, updateFormData }: PersonalInfoSe
           placeholder="example@example.com"
           value={formData.email || ""}
           onChange={(e) => updateFormData({ email: e.target.value })}
-          className="bg-white"
+          className="bg-background"
         />
       </div>
 
@@ -65,7 +65,7 @@ export const PersonalInfoSection = ({ formData, updateFormData }: PersonalInfoSe
             value={formData.country || ""}
             onValueChange={(value) => updateFormData({ country: value })}
           >
-            <SelectTrigger className="bg-white">
+            <SelectTrigger className="bg-background">
               <SelectValue placeholder="Country" />
             </SelectTrigger>
             <SelectContent>
@@ -81,14 +81,14 @@ export const PersonalInfoSection = ({ formData, updateFormData }: PersonalInfoSe
             placeholder="State/Province"
             value={formData.state || ""}
             onChange={(e) => updateFormData({ state: e.target.value })}
-            className="bg-white"
+            className="bg-background"
           />
           
           <Input
             placeholder="City"
             value={formData.city || ""}
             onChange={(e) => updateFormData({ city: e.target.value })}
-            className="bg-white"
+            className="bg-background"
           />
         </div>
       </div>
@@ -102,7 +102,7 @@ export const PersonalInfoSection = ({ formData, updateFormData }: PersonalInfoSe
           placeholder="+92 300 1234567"
           value={formData.phone || ""}
           onChange={(e) => updateFormData({ phone: e.target.value })}
-          className="bg-white"
+          className="bg-background"
         />
       </div>
 
@@ -151,7 +151,7 @@ export const PersonalInfoSection = ({ formData, updateFormData }: PersonalInfoSe
           placeholder="https://linkedin.com/in/yourprofile"
           value={formData.linkedin || ""}
           onChange={(e) => updateFormData({ linkedin: e.target.value })}
-          className="bg-white"
+          className="bg-background"
         />
       </div>
     </div>

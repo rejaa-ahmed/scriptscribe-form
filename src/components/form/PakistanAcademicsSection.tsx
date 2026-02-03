@@ -57,7 +57,7 @@ export const PakistanAcademicsSection = ({ formData, updateFormData }: PakistanA
           value={formData.pakistanDegree || ""}
           onValueChange={(value) => updateFormData({ pakistanDegree: value })}
         >
-          <SelectTrigger className="bg-white">
+          <SelectTrigger className="bg-background">
             <SelectValue placeholder="Please Select" />
           </SelectTrigger>
           <SelectContent>
@@ -78,7 +78,7 @@ export const PakistanAcademicsSection = ({ formData, updateFormData }: PakistanA
           placeholder="Enter your university or college name"
           value={formData.pakistanUniversity || ""}
           onChange={(e) => updateFormData({ pakistanUniversity: e.target.value })}
-          className="bg-white"
+          className="bg-background"
         />
       </div>
 
@@ -90,7 +90,7 @@ export const PakistanAcademicsSection = ({ formData, updateFormData }: PakistanA
           placeholder="Enter your department"
           value={formData.pakistanDepartment || ""}
           onChange={(e) => updateFormData({ pakistanDepartment: e.target.value })}
-          className="bg-white"
+          className="bg-background"
         />
       </div>
 
@@ -101,7 +101,7 @@ export const PakistanAcademicsSection = ({ formData, updateFormData }: PakistanA
           value={formData.pakistanGraduationYear || ""}
           onValueChange={(value) => updateFormData({ pakistanGraduationYear: value })}
         >
-          <SelectTrigger className="bg-white">
+          <SelectTrigger className="bg-background">
             <SelectValue placeholder="Please Select" />
           </SelectTrigger>
           <SelectContent>
