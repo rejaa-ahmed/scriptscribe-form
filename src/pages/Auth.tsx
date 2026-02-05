@@ -180,7 +180,7 @@ const Auth = () => {
     
     try {
       const { error } = await lovable.auth.signInWithOAuth("google", {
-        redirect_uri: window.location.origin,
+        redirect_uri: `${window.location.origin}/register`,
       });
 
       if (error) {
