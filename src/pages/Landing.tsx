@@ -112,19 +112,22 @@ const Landing = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
+      {/* Be a Part of The Solution */}
       <section className="py-16 sm:py-24 px-4">
-        <div className="max-w-3xl mx-auto text-center">
-          <h2 className="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-            Ready to Make a Difference?
-          </h2>
-          <p className="text-muted-foreground mb-8">
-            Register now to become part of the solution. Your skills, expertise, and commitment can help transform Pakistan.
-          </p>
-          <Link to={user ? "/register" : "/auth"}>
-            <Button size="lg" className="bg-primary hover:bg-primary/90 text-lg px-8">
-              Register Now
-            </Button>
+        <div className="max-w-3xl mx-auto">
+          <Link to={user ? "/register" : "/auth"} className="block group">
+            <div className="bg-primary/5 border-2 border-primary/20 rounded-2xl p-10 sm:p-14 text-center hover:bg-primary/10 hover:border-primary/40 hover:shadow-xl transition-all duration-300 cursor-pointer">
+              <h2 className="text-3xl sm:text-4xl font-bold text-primary mb-4 group-hover:scale-105 transition-transform duration-300">
+                Be a Part of The Solution
+              </h2>
+              <p className="text-muted-foreground mb-6 text-lg max-w-xl mx-auto">
+                Your skills, expertise, and commitment can help transform Pakistan. Join thousands working toward systemic reform.
+              </p>
+              <span className="inline-flex items-center gap-2 text-primary font-semibold text-lg group-hover:gap-3 transition-all duration-300">
+                Join the Movement
+                <UserPlus className="h-5 w-5" />
+              </span>
+            </div>
           </Link>
         </div>
       </section>
