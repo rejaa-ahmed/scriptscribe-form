@@ -8,7 +8,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { pakistanDegrees, graduationYears } from "@/data/formOptions";
+import { pakistanDegrees, graduationYears, pakistanUniversities } from "@/data/formOptions";
 import { ExternalLink } from "lucide-react";
 
 interface PakistanAcademicsSectionProps {
@@ -72,14 +72,22 @@ export const PakistanAcademicsSection = ({ formData, updateFormData }: PakistanA
 
       {/* University */}
       <div className="space-y-2">
-        <Label htmlFor="pakistanUniversity">University/College</Label>
-        <Input
-          id="pakistanUniversity"
-          placeholder="Enter your university or college name"
+        <Label>University/College</Label>
+        <Select
           value={formData.pakistanUniversity || ""}
-          onChange={(e) => updateFormData({ pakistanUniversity: e.target.value })}
-          className="bg-background"
-        />
+          onValueChange={(value) => updateFormData({ pakistanUniversity: value })}
+        >
+          <SelectTrigger className="bg-background">
+            <SelectValue placeholder="Please Select" />
+          </SelectTrigger>
+          <SelectContent className="max-h-60 bg-popover z-50">
+            {pakistanUniversities.map((uni) => (
+              <SelectItem key={uni} value={uni}>
+                {uni}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       {/* Department */}
