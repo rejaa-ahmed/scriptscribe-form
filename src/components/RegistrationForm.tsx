@@ -10,16 +10,17 @@ import { ArrowLeft, ArrowRight, Save, Send, CheckCircle, Loader2, Edit } from "l
 import { useRegistrationForm } from "@/hooks/useRegistrationForm";
 
 const STEPS = [
-  { id: 1, title: "Personal Info" },
-  { id: 2, title: "Your Academics in Pakistan" },
-  { id: 3, title: "Overseas Academics/Professional experience" },
-  { id: 4, title: "What can I do for Pakistan" },
-  { id: 5, title: "I want to be part of solution" },
+  { id: 1, title: "Personal Info", icon: "user" },
+  { id: 2, title: "Alumni Corner", icon: "graduationCap" },
+  { id: 3, title: "PhD / Professionals Club", icon: "globe" },
+  { id: 4, title: "Become Part of Solution", icon: "lightbulb" },
+  { id: 5, title: "Commitment", icon: "heart" },
 ];
 
 export const RegistrationForm = () => {
   const {
     currentStep,
+    setCurrentStep,
     formData,
     updateFormData,
     isSubmitted,
@@ -109,7 +110,7 @@ export const RegistrationForm = () => {
 
   return (
     <Card className="max-w-3xl mx-auto shadow-form overflow-hidden">
-      <FormStep steps={STEPS} currentStep={currentStep} />
+      <FormStep steps={STEPS} currentStep={currentStep} onStepClick={(id) => { setCurrentStep(id); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
       
       <CardContent className="p-6 sm:p-8">
         {renderSection()}
