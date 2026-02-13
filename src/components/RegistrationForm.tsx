@@ -4,17 +4,25 @@ import { FormStep } from "./form/FormStep";
 import { PersonalInfoSection } from "./form/PersonalInfoSection";
 import { PakistanAcademicsSection } from "./form/PakistanAcademicsSection";
 import { OverseasAcademicsSection } from "./form/OverseasAcademicsSection";
-import { ContributionSection } from "./form/ContributionSection";
+import { PhDClubSection } from "./form/PhDClubSection";
+import { CClubSection } from "./form/CClubSection";
+import { ExpertTeamsSection } from "./form/ExpertTeamsSection";
+import { ConstituencySection } from "./form/ConstituencySection";
 import { CommitmentSection } from "./form/CommitmentSection";
 import { ArrowLeft, ArrowRight, Save, Send, CheckCircle, Loader2, Edit } from "lucide-react";
 import { useRegistrationForm } from "@/hooks/useRegistrationForm";
 
+const TOTAL_STEPS = 8;
+
 const STEPS = [
   { id: 1, title: "Personal Info", icon: "user" },
-  { id: 2, title: "Alumni Corner", icon: "graduationCap" },
-  { id: 3, title: "PhD / Professionals Club", icon: "globe" },
-  { id: 4, title: "Become Part of Solution", icon: "lightbulb" },
-  { id: 5, title: "Commitment", icon: "heart" },
+  { id: 2, title: "Student / Alumni Corner", icon: "graduationCap" },
+  { id: 3, title: "Overseas Academics", icon: "globe" },
+  { id: 4, title: "PhD Club", icon: "bookOpen" },
+  { id: 5, title: "C-Club", icon: "briefcase" },
+  { id: 6, title: "Expert Teams", icon: "lightbulb" },
+  { id: 7, title: "Constituency Corner", icon: "mapPin" },
+  { id: 8, title: "Commitment", icon: "heart" },
 ];
 
 export const RegistrationForm = () => {
@@ -44,8 +52,14 @@ export const RegistrationForm = () => {
       case 3:
         return <OverseasAcademicsSection formData={formData} updateFormData={updateFormData} />;
       case 4:
-        return <ContributionSection formData={formData} updateFormData={updateFormData} />;
+        return <PhDClubSection formData={formData} updateFormData={updateFormData} />;
       case 5:
+        return <CClubSection formData={formData} updateFormData={updateFormData} />;
+      case 6:
+        return <ExpertTeamsSection formData={formData} updateFormData={updateFormData} />;
+      case 7:
+        return <ConstituencySection formData={formData} updateFormData={updateFormData} />;
+      case 8:
         return <CommitmentSection formData={formData} updateFormData={updateFormData} />;
       default:
         return null;
@@ -109,7 +123,7 @@ export const RegistrationForm = () => {
   }
 
   return (
-    <Card className="max-w-3xl mx-auto shadow-form overflow-hidden">
+    <Card className="max-w-4xl mx-auto shadow-form overflow-hidden">
       <FormStep steps={STEPS} currentStep={currentStep} onStepClick={(id) => { setCurrentStep(id); window.scrollTo({ top: 0, behavior: "smooth" }); }} />
       
       <CardContent className="p-6 sm:p-8">
@@ -137,7 +151,7 @@ export const RegistrationForm = () => {
               <Save className="w-4 h-4" /> Save
             </Button>
             
-            {currentStep < STEPS.length ? (
+            {currentStep < TOTAL_STEPS ? (
               <Button
                 onClick={handleNext}
                 className="flex items-center gap-2 bg-primary hover:bg-primary/90"

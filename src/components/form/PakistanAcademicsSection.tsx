@@ -20,7 +20,7 @@ export const PakistanAcademicsSection = ({ formData, updateFormData }: PakistanA
   return (
     <div className="space-y-6 animate-slide-in">
       <div>
-        <h2 className="text-2xl font-bold text-foreground">Your Academics in Pakistan</h2>
+        <h2 className="text-2xl font-bold text-foreground">Student / Alumni Corner</h2>
         <a 
           href="https://unitedforbetterpakistan.org/" 
           target="_blank" 

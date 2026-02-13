@@ -130,7 +130,7 @@ export const useRegistrationForm = () => {
   }, []);
 
   const handleNext = useCallback(() => {
-    setCurrentStep((prev) => Math.min(prev + 1, 5));
+    setCurrentStep((prev) => Math.min(prev + 1, 8));
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, []);
 
