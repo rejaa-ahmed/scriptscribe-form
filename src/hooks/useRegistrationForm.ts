@@ -164,8 +164,13 @@ export const useRegistrationForm = () => {
     setIsSubmitting(true);
 
     try {
-      const registrationData = {
-        user_id: user.id,
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session?.access_token) {
+        toast.error("Session expired. Please sign in again.");
+        return;
+      }
+
+      const payload = {
         first_name: formData.firstName,
         last_name: formData.lastName,
         email: formData.email,
@@ -205,26 +210,16 @@ export const useRegistrationForm = () => {
         time_commitment: formData.timeCommitment,
         referral: formData.referral,
         comments: formData.comments,
+        ...(existingRegistration ? { mode: "update", registration_id: existingRegistration.id } : {}),
       };
 
-      let error;
-      
-      if (existingRegistration) {
-        // Update existing registration
-        const result = await supabase
-          .from("registrations")
-          .update(registrationData)
-          .eq("id", existingRegistration.id);
-        error = result.error;
-      } else {
-        // Insert new registration
-        const result = await supabase.from("registrations").insert(registrationData);
-        error = result.error;
-      }
+      const response = await supabase.functions.invoke("submit-registration", {
+        body: payload,
+      });
 
-      if (error) {
-        console.error("Submission error:", error);
-        toast.error("Failed to submit registration. Please try again.");
+      if (response.error || response.data?.error) {
+        const msg = response.data?.error || "Failed to submit registration. Please try again.";
+        toast.error(msg);
         return;
       }
 
